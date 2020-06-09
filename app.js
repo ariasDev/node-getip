@@ -10,10 +10,15 @@ app.use(cors())
 app.get('/', (req, res, next) => {
     
     console.log('Ejecutando mw de fs write');
-    fs.appendFile('ips.txt', `\n new ip: ${req.connection.remoteAddress}`, function(err) {
+    fs.appendFile('public/ips.txt', `\n new ip: ${JSON.stringify(req.headers['client-ip'])} Fecha: ${new Date()}`, function(err) {
         if(err) return console.error(err);
     });
     next()
+})
+
+
+app.get('/logs', (req, res, next) => {
+    res.sendFile(path.join(__dirname, 'public/ips.txt'))
 })
 
 
